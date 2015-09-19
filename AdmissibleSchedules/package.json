@@ -1,0 +1,29 @@
+{
+  "name": "admissible-process-schedule",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lpgarzonr/AdmissibleSchedules.git"
+  },
+  "keywords": [
+    "schedules",
+    "optimization"
+  ],
+  "author": "Leidy Garzon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lpgarzonr/AdmissibleSchedules/issues"
+  },
+  "homepage": "https://github.com/lpgarzonr/AdmissibleSchedules#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "node-inspector": "^0.12.3",
+    "nodemon": "^1.6.1",
+    "jasmine": "^2.3.2"
+  },
+  "description": ""
+}
