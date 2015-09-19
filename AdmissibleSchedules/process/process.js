@@ -1,21 +1,11 @@
-var ActivitySimple = function(id){ 
-    this.id = id;
-    this. dependencies = [];
-}
 
-ActivitySimple.prototype = { 
-    addDependency: function(activity){
-       this. dependencies.push(activity) 
-    }
-}
-
-var Activity = function(){
-  var dependencies = [];  
+var Activity = function(id){
+  this.id = id;
+  var  dependencies = [];
   
-  function Activity(id) {    
-  	this.id = id;
+  function Activity() {    
     this.addDependency = function addDependency(activity) {
-      dependencies.push(activity);
+       dependencies.push(activity) 
     };
 
     this.getDependencies = function getDependencies() {
@@ -26,4 +16,3 @@ var Activity = function(){
 }();
 
 module.exports.Activity = Activity;
-module.exports.ActivitySimple = ActivitySimple;

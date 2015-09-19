@@ -1,6 +1,5 @@
 var process = require('../process/process.js');
 
-var a1 = new process.ActivitySimple(1);
 var a2 = new process.Activity(2);
 
 console.log("--Module---");
