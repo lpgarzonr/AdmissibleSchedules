@@ -28,18 +28,20 @@ Activity.prototype = function(){
             };  
 }();
 
-
 var Process = function(){ 
     this.activities = [];
 };
-Process.prototype = { 
-    addActivity : function addActivity(activity) {
+Process.prototype = function(){
+    function addActivity(activity) {
       this.activities.push(activity);
-    },
-    getActivities : function getActivities() {
+    };
+    function getActivities() {
       return _.flatten(this.activities);
-    }
-};
+    };
+    return {getActivities: getActivities,
+            addActivity: addActivity
+            };     
+}();
 
 module.exports.Activity = Activity;
 module.exports.Process = Process;
