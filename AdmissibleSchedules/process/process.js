@@ -7,30 +7,27 @@ var Activity = function(id){
     this.isMovable = false;
 };
 
-Activity.prototype = {
-    //private 
-   /* computeLevel :function computeLevel() {
-      this.level = _.max(this.dependencies, function(activity){return activity.level;}).level + 1;
-    },*/
+Activity.prototype = function(){
 
-    //public
-    setMovable :function setMovable(isMovable) {
-      this.isMovable = isMovable;
-    },
+    function computeLevel(dependencies) {
+        return _.max(dependencies, function(depActivity){return depActivity.level;}).level + 1;
+    };
+    function setMovable(isMovable) {
+        this.isMovable = isMovable;
+    };
+    function addDependency(activity) {
+        this.dependencies.push(activity);
+        this.level = computeLevel(this.dependencies);
+    };
+    function getDependencies() {
+        return _.flatten(this.dependencies);
+    };  
+    return {setMovable: setMovable,
+            addDependency: addDependency,
+            getDependencies: getDependencies
+            };  
+}();
 
-    addDependency : function addDependency(activity) {
-      this.computeLevel = function computeLevel() {
-          this.level = _.max(this.dependencies, function(depActivity){return depActivity.level;}).level + 1;
-      };
-      this.dependencies.push(activity);
-      this.computeLevel();
-    },
-    getDependencies : function getDependencies() {
-      return _.flatten(this.dependencies);
-    }
-
-    
-};
 
 var Process = function(){ 
     this.activities = [];
@@ -43,31 +40,6 @@ Process.prototype = {
       return _.flatten(this.activities);
     }
 };
-/*
-var Activity = function(){
-  this. dependencies = [];
-  var pdependencies = {};
-  
-  function Activity() {    
-    this.addDependency = function addDependency(activity) {
-      this. dependencies.push(activity) 
-    };
 
-    this.getDependencies = function getDependencies() {
-      return this. dependencies;
-    };
-
-    this.addPDependency = function addDependency(activity) {
-      pdependencies.push(activity) 
-    };
-
-    this.getPDependencies = function getDependencies() {
-      return pdependencies;
-    };
-
-  }
-  return Activity;  
-}();
-*/
 module.exports.Activity = Activity;
 module.exports.Process = Process;
