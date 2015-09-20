@@ -1,5 +1,8 @@
 var _ = require("../node_modules/underscore/underscore.js");
 
+/**
+ * Constructor of a Activity
+ */
 var Activity = function(id){ 
     this.id = id;
     this. dependencies = [];
@@ -8,10 +11,18 @@ var Activity = function(id){
 };
 
 Activity.prototype = function(){
-
-    function computeLevel(dependencies) {
-        return _.max(dependencies, function(depActivity){return depActivity.level;}).level + 1;
+    /**
+     * Private function to compute the level of the activitie in the process graph tree, based on the activities dependences levels
+     * @param [{actDependencies}] Dependent activities
+     * @return {number} Level of the activity in the procces graph tree
+     */
+    function computeLevel(actDependencies) {
+        return _.max(actDependencies, function(depActivity){return depActivity.level;}).level + 1;
     };
+    /**
+     * Function to set if the activity can be moved in the schedule
+     * @param {isMovable} Boolean which determine if the activity can be moved in the schedule
+     */
     function setMovable(isMovable) {
         this.isMovable = isMovable;
     };
@@ -28,6 +39,9 @@ Activity.prototype = function(){
             };  
 }();
 
+/**
+ * Constructor of a Process
+ */
 var Process = function(){ 
     this.activities = [];
 };
@@ -35,6 +49,11 @@ Process.prototype = function(){
     function addActivity(activity) {
       this.activities.push(activity);
     };
+
+    /**
+     * Provides the activities of the process
+     * @return [{Activities}] List of actvities of the process, flatten is used to return all the activities inserted in a unique vector
+     */
     function getActivities() {
       return _.flatten(this.activities);
     };

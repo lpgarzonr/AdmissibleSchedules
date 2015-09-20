@@ -46,7 +46,7 @@ function buildSchedules(processGraph){
 				}
 			});	
 			var permutedActivities = getActivitiesPermutation(activitiesInLevel[0]);		
-			schedulesTable.concatTailSchedules(permutedActivities);
+			schedulesTable.concatSubSchedules(permutedActivities);
 			activitiesInPrevLevel = activitiesInLevel[0].length;
 		});	
 };
