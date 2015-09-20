@@ -5,13 +5,6 @@ var ScheduleTable = function(){
 };
 
 ScheduleTable.prototype = { 
-
-    /*addActivityToAllSchedules : function addActivityToAllSchedules(activity) {
-      this.schedules.forEach(function(schedule){
-		schedule.push(activity);
-	  });
-    },*/
-    //private
     getScheduleByMovingActivities : function getScheduleByMovingActivities(tmpSchedules) {
         var newSchedules = [];
         var borrame = {};

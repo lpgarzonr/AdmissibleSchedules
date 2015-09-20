@@ -9,23 +9,27 @@ var Activity = function(id){
 
 Activity.prototype = {
     //private 
-    computeLevel :function computeLevel() {
+   /* computeLevel :function computeLevel() {
       this.level = _.max(this.dependencies, function(activity){return activity.level;}).level + 1;
-    },
-    
+    },*/
+
     //public
     setMovable :function setMovable(isMovable) {
       this.isMovable = isMovable;
     },
 
     addDependency : function addDependency(activity) {
+      this.computeLevel = function computeLevel() {
+          this.level = _.max(this.dependencies, function(depActivity){return depActivity.level;}).level + 1;
+      };
       this.dependencies.push(activity);
       this.computeLevel();
-      //this.stablishIfActivityIsMovable();
     },
     getDependencies : function getDependencies() {
       return _.flatten(this.dependencies);
     }
+
+    
 };
 
 var Process = function(){ 

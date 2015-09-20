@@ -35,10 +35,6 @@ outputBuilder.printSchedules(schedulesTable.schedules);
 function buildSchedules(processGraph){
 
 	var activities = processGraph.getActivities();
-	var independentInitialActivities = findInitialActivities(activities);
-
-	//schedulesTable.schedules = getActivitiesPermutation(independentInitialActivities);
-	
 	var treeActivitiesByLevel = treeActivitiesBuilder.getTreeActivities(activities);
 	var activitiesInPrevLevel = 0;
 	//encontrar de las que dependo
@@ -53,16 +49,6 @@ function buildSchedules(processGraph){
 			schedulesTable.concatTailSchedules(permutedActivities);
 			activitiesInPrevLevel = activitiesInLevel[0].length;
 		});	
-	//encontrar de las que dependo
-	/*independentInitialActivities.forEach(function(initialActivity){
-		var nextActivities = findNextActivities(initialActivity, activities);
-		nextActivities.forEach(function(nextActivity){
-			if(nextActivity.getDependencies().length === 1){
-				schedulesTable.addActivityToAllSchedules(nextActivity);
-			}
-			else{}
-		});		
-	});*/
 };
 
 function getActivitiesDependenciesInPreviousLevel(activity){
@@ -73,22 +59,6 @@ function getActivitiesDependenciesInPreviousLevel(activity){
 	});
 
 }
-
-function findInitialActivities(activities){
-	var initialActivities = activities.filter(function (activity){
-		return (activity.getDependencies().length === 0);
-	});
-	return initialActivities;
-};
-
-function findNextActivities(originActivity, activities){
-	//for (var idxAct = 0; idxAct < initialActivities.length; idxAct++) {
-	var nextActivities = activities.filter(function (activity){
-				return _.contains(activity.getDependencies(), originActivity);
-		});
-	return nextActivities;
-	//}
-};
 
 function getActivitiesPermutation(activitiesToPermute) {
   var permutedScheduleActivities = [];

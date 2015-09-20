@@ -18,6 +18,7 @@ a3.addDependency(a1);
 //x.addDependency(a2);
 a4.addDependency(a2);
 a4.addDependency(a3);
+console.log(a4.computeLevel());
 /*a4.addDependency(x);
 a5.addDependency(a4);
 a6.addDependency(a4);
