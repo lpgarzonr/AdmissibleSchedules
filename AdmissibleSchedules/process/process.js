@@ -4,22 +4,24 @@ var Activity = function(id){
     this.id = id;
     this. dependencies = [];
     this.level = 0;
-    //this.isMovable = false;
+    this.isMovable = false;
 };
 
 Activity.prototype = {
     //private 
     computeLevel :function computeLevel() {
-      this.level = _.max(this.dependencies, function(activity){return activity.level;}).level +1;
+      this.level = _.max(this.dependencies, function(activity){return activity.level;}).level + 1;
+    },
+    
+    //public
+    setMovable :function setMovable(isMovable) {
+      this.isMovable = isMovable;
     },
 
-    /*stablishIfActivityIsMovable :function computeLevel() {
-      this.isMovable = _.reject(this.dependencies, function(activity){ return activity.level === this.level-1; }).length > 0;
-    },*/
-    //public
     addDependency : function addDependency(activity) {
       this.dependencies.push(activity);
       this.computeLevel();
+      //this.stablishIfActivityIsMovable();
     },
     getDependencies : function getDependencies() {
       return _.flatten(this.dependencies);

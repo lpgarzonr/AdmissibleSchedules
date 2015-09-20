@@ -1,7 +1,9 @@
 var _ = require("./node_modules/underscore/underscore.js");
-var inputBuilder = require('./inputBuilder/inputBuilder.js');
+var inputBuilder = require('./inputOutputBuilder/inputBuilder.js');
+var outputBuilder = require('./inputOutputBuilder/outputBuilder.js');
 var schedulerBuilder = require('./scheduleBuilder/scheduleBuilder.js');
 var scheduleBuilder = require('./scheduleBuilder/scheduleBuilder.js');
+
 var treeActivitiesBuilder = schedulerBuilder.treeActivitiesBuilder;
 
 var processGraph = inputBuilder.buildProcessToSchedule('InputString');
@@ -27,7 +29,8 @@ ScheduleTable.prototype = {
 };
 */
 //var schedulesTable = new ScheduleTable();
-console.log(schedulesTable.schedules);
+
+outputBuilder.printSchedules(schedulesTable.schedules);
 
 function buildSchedules(processGraph){
 
@@ -37,14 +40,19 @@ function buildSchedules(processGraph){
 	//schedulesTable.schedules = getActivitiesPermutation(independentInitialActivities);
 	
 	var treeActivitiesByLevel = treeActivitiesBuilder.getTreeActivities(activities);
-
+	var activitiesInPrevLevel = 0;
 	//encontrar de las que dependo
-	treeActivitiesByLevel.forEach(function(activitiesInLevel){
-		var permutedActivities = getActivitiesPermutation(activitiesInLevel[0]);
-		schedulesTable.concatTailSchedules(permutedActivities);
-		activitiesInLevel.forEach(function(activity){		
-		});		
-	});
+		treeActivitiesByLevel.forEach(function(activitiesInLevel){
+			activitiesInLevel[0].forEach(function(activity){
+				if (getActivitiesDependenciesInPreviousLevel(activity).length !== activitiesInPrevLevel)
+				{
+					activity.setMovable == true;
+				}
+			});	
+			var permutedActivities = getActivitiesPermutation(activitiesInLevel[0]);		
+			schedulesTable.concatTailSchedules(permutedActivities);
+			activitiesInPrevLevel = activitiesInLevel[0].length;
+		});	
 	//encontrar de las que dependo
 	/*independentInitialActivities.forEach(function(initialActivity){
 		var nextActivities = findNextActivities(initialActivity, activities);
@@ -56,6 +64,15 @@ function buildSchedules(processGraph){
 		});		
 	});*/
 };
+
+function getActivitiesDependenciesInPreviousLevel(activity){
+	var dependencies = activity.getDependencies();
+	var level = activity.level;
+	return dependencies.filter(function (activityDep){
+		return (activityDep.level === level-1);
+	});
+
+}
 
 function findInitialActivities(activities){
 	var initialActivities = activities.filter(function (activity){
