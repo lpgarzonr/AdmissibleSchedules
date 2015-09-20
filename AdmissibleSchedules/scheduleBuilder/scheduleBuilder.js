@@ -13,25 +13,39 @@ ScheduleTable.prototype = {
     },*/
     //private
     getScheduleByMovingActivities : function getScheduleByMovingActivities(tmpSchedules) {
+        var newSchedules = [];
+        var borrame = {};
         tmpSchedules.forEach(function(tmpSchedule){
             var activityToMove = _.last(tmpSchedule);
             if(activityToMove.isMovable == true){
-                var idx = getMaxIdxOfDependencies(tmpSchedules, activityToMove);
-                console.log (idx);
+                var idxToMove = getMaxIdxOfDependencies(tmpSchedule, activityToMove)+1;
+                if(idxToMove!==tmpSchedules.length-2){
+                    borrame = moveActivity(tmpSchedule, idxToMove, activityToMove);
+                    newSchedules.push(borrame);
+                }
             }               
         });
+
+        //given an activity returns the allowed index to move depending of the dependencies idx
+        function getMaxIdxOfDependencies(schedule, activity) {
+            var maxIdx = 0;
+            activity.getDependencies().forEach(function(dependencyAct){
+                dependencyIdx = _.indexOf(schedule, dependencyAct);
+                if (maxIdx < dependencyIdx){
+                    maxIdx = dependencyIdx;
+                }
+            });
+            return maxIdx;
+        };
+
+        function moveActivity(schedule, idxToMove, activityToMove) {
+            var tmpSchedule = schedule.slice(0, schedule.length-1);
+            tmpSchedule.splice(idxToMove, 0, activityToMove);
+            return tmpSchedule;
+        };
+        return newSchedules;
     },
 
-    //given an activity returns the allowed index to move depending of the dependencies idx
-    getMaxIdxOfDependencies : function getMaxIdxOfDependencies(schedule, activity) {
-        var maxIdx = 0;
-        activity.getDependencies().forEach(function(dependencyAct){
-            dependencyIdx = _.indexOf(schedule, dependencyAct);
-            if (maxIdx < dependencyIdx){
-                maxIdx = dependencyIdx;
-            }
-        });
-    },
     //public
     addSchedule : function addSchedule(schedule) {
       this.schedules.push(schedule);
@@ -43,6 +57,7 @@ ScheduleTable.prototype = {
 
     concatTailSchedules : function concatTailSchedules(tailSchedules){
       var tmpSchedules = [];
+      var tmpMovedSchedules = [];
       if(this.schedules.length === 0){
           this.schedules = tailSchedules;
       }else {
@@ -52,8 +67,8 @@ ScheduleTable.prototype = {
             });
           });
           //mueve elementos
-          this.getScheduleByMovingActivities(tmpSchedules);
-          this.schedules = tmpSchedules;
+          tmpMovedSchedules = this.getScheduleByMovingActivities(tmpSchedules);
+          this.schedules = tmpSchedules.concat(tmpMovedSchedules);
         }
     }
 };

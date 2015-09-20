@@ -46,7 +46,7 @@ function buildSchedules(processGraph){
 			activitiesInLevel[0].forEach(function(activity){
 				if (getActivitiesDependenciesInPreviousLevel(activity).length !== activitiesInPrevLevel)
 				{
-					activity.setMovable == true;
+					activity.setMovable(true);
 				}
 			});	
 			var permutedActivities = getActivitiesPermutation(activitiesInLevel[0]);		
