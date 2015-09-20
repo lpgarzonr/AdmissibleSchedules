@@ -1,14 +1,28 @@
+var _ = require("../node_modules/underscore/underscore.js");
+
 var Activity = function(id){ 
     this.id = id;
     this. dependencies = [];
+    this.level = 0;
+    //this.isMovable = false;
 };
 
-Activity.prototype = { 
+Activity.prototype = {
+    //private 
+    computeLevel :function computeLevel() {
+      this.level = _.max(this.dependencies, function(activity){return activity.level;}).level +1;
+    },
+
+    /*stablishIfActivityIsMovable :function computeLevel() {
+      this.isMovable = _.reject(this.dependencies, function(activity){ return activity.level === this.level-1; }).length > 0;
+    },*/
+    //public
     addDependency : function addDependency(activity) {
       this.dependencies.push(activity);
+      this.computeLevel();
     },
     getDependencies : function getDependencies() {
-      return this.dependencies;
+      return _.flatten(this.dependencies);
     }
 };
 
@@ -20,7 +34,7 @@ Process.prototype = {
       this.activities.push(activity);
     },
     getActivities : function getActivities() {
-      return this.activities; //TODO: flaten para permitir q se metan listas o de a uno
+      return _.flatten(this.activities);
     }
 };
 /*
