@@ -26,12 +26,14 @@ a8.addDependency(a5);
 a9.addDependency(a6);
 
 function buildProcessToSchedule(input){
+//TODO: Build the process and activities automatically from a given input string	
 	var processToSchedule = new process.Process();
 	//processToSchedule.addActivity([a1,a2,a3,a4,x]);
 	processToSchedule.addActivity([a1,a2,a3,a4,a5,a6,a7,a8,a9]);
 	return processToSchedule;
 };
 function buildSmallProcessToSchedule(input){
+//TODO: Build the process and activities automatically from a given input string	
 	var processToSchedule = new process.Process();
 	processToSchedule.addActivity([a1,a2,a3,a4]);
 	return processToSchedule;

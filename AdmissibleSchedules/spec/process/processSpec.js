@@ -4,9 +4,9 @@ describe("process: Activity", function() {
   var activityTwo;
 
   beforeEach(function() {
-  	process = require('../../process/process.js');
-	activityOne = new process.Activity(1);
-	activityTwo = new process.Activity(2);
+  	 process = require('../../process/process.js');
+	   activityOne = new process.Activity(1);
+	   activityTwo = new process.Activity(2);
   });
 
   it("should return the activities dependencies after inserting some", function() {

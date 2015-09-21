@@ -1,5 +1,4 @@
 var _ = require("../node_modules/underscore/underscore.js");
-var outputBuilder = require('../inputOutputBuilder/outputBuilder.js');
 
 /**
  * Private function to compute the level of the activitie in the process graph tree, based on the activities dependences levels
@@ -77,7 +76,6 @@ ScheduleTable.prototype = function(){
                 tmpSchedules.push(schedule.concat(tailSchedule));                
             });
           });
-          //mueve elementos
           tmpMovedSchedules = getScheduleByMovingActivities(tmpSchedules);
           this.schedules = tmpSchedules.concat(tmpMovedSchedules);
         }
@@ -97,7 +95,7 @@ var shedulerBuilder = function(){
    * Public function to build all the schedules
    * @param {processGraph} Process graph wich contains the activities with their respective dependency activities
    */
-    function buildSchedules(processGraph){
+    function getSchedules(processGraph){
       var schedulesTable = new ScheduleTable();
       var activities = processGraph.getActivities();
       var treeActivitiesByLevel = buildTreeActivitiesByLevels(activities);
@@ -138,7 +136,7 @@ var shedulerBuilder = function(){
           }
           return permute(activitiesToPermute);
         };
-        outputBuilder.printSchedules(schedulesTable.schedules);
+        return schedulesTable.schedules;
   };
    /**
    * Private function to build a tree of activities depending of the level of echa activity
@@ -151,7 +149,7 @@ var shedulerBuilder = function(){
         });
         return treeActivitiesByLevels;
     };
-  return {buildSchedules: buildSchedules};  
+  return {getSchedules: getSchedules};  
 }();
 
 module.exports.ScheduleTable = ScheduleTable;
