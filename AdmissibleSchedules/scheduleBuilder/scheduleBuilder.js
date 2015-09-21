@@ -1,4 +1,5 @@
 var _ = require("../node_modules/underscore/underscore.js");
+var outputBuilder = require('../inputOutputBuilder/outputBuilder.js');
 
 /**
  * Private function to compute the level of the activitie in the process graph tree, based on the activities dependences levels
@@ -93,13 +94,62 @@ ScheduleTable.prototype = function(){
 }();
 
 /**
- * Private function to compute the level of the activitie in the process graph tree, based on the activities dependences levels
- * @param [{actDependencies}] Dependent activities
- * @return {number} Level of the activity in the procces graph tree
+ * Module which allow to build all the schedules
  */
-var treeActivitiesBuilder = function(){
+var shedulerBuilder = function(){
   var treeActivitiesByLevels = [];
 
+   /**
+   * Public function to build all the schedules
+   * @param {processGraph} Process graph wich contains the activities with their respective dependency activities
+   */
+    function buildSchedules(processGraph){
+      var schedulesTable = new ScheduleTable();
+      var activities = processGraph.getActivities();
+      var treeActivitiesByLevel = buildTreeActivitiesByLevels(activities);
+      var activitiesInPrevLevel = 0;
+        treeActivitiesByLevel.forEach(function(activitiesInLevel){
+          activitiesInLevel[0].forEach(function(activity){
+            if (getActivitiesDependenciesInPreviousLevel(activity).length !== activitiesInPrevLevel)
+            {
+              activity.setMovable(true);
+            }
+          }); 
+      var permutedActivities = getActivitiesPermutation(activitiesInLevel[0]);    
+      schedulesTable.concatSubSchedules(permutedActivities);
+      activitiesInPrevLevel = activitiesInLevel[0].length;
+      }); 
+
+        function getActivitiesDependenciesInPreviousLevel(activity){
+          var dependencies = activity.getDependencies();
+          var level = activity.level;
+          return dependencies.filter(function (activityDep){
+            return (activityDep.level === level-1);
+          });
+        };
+
+        function getActivitiesPermutation(activitiesToPermute) {
+          var permutedScheduleActivities = [];
+          function permute(activities, memo) {
+            var cur, memo = memo || [];
+            for (var idxAct = 0; idxAct < activities.length; idxAct++) {
+              cur = activities.splice(idxAct, 1);
+              if (activities.length === 0) {
+                permutedScheduleActivities.push(memo.concat(cur));
+              }
+              permute(activities.slice(), memo.concat(cur));
+              activities.splice(idxAct, 0, cur[0]);
+            }
+            return permutedScheduleActivities;
+          }
+          return permute(activitiesToPermute);
+        };
+        outputBuilder.printSchedules(schedulesTable.schedules);
+  };
+   /**
+   * Private function to build a tree of activities depending of the level of echa activity
+   * @return [[{activity}] List of the activities group by level, each posicion of the treeActivitiesByLevels contains the list of activities whith the same level
+   */
     function buildTreeActivitiesByLevels(activities) {  
         var treeActivitiesByLevelsObj = _(activities).groupBy(function(activity) {return activity.level;});
         treeActivitiesByLevels= _.map(treeActivitiesByLevelsObj,function(value, index) {
@@ -107,9 +157,8 @@ var treeActivitiesBuilder = function(){
         });
         return treeActivitiesByLevels;
     };
-  
-  return {getTreeActivities: buildTreeActivitiesByLevels};  
+  return {buildSchedules: buildSchedules};  
 }();
 
 module.exports.ScheduleTable = ScheduleTable;
-module.exports.treeActivitiesBuilder = treeActivitiesBuilder;
+module.exports.schedulerBuilder = shedulerBuilder;
