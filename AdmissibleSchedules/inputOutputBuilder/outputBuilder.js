@@ -4,6 +4,9 @@ var outputBuilder = function(){
      * @param [schedules] All schedules found.
      */
     function printSchedules(schedules) {  
+      if (!(schedules) || schedules.length === 0) {
+        throw new Error("No schedules to print");
+      }
         var line;
         schedules.forEach(function(schedule){
             line = "";

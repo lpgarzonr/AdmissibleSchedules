@@ -62,10 +62,6 @@ ScheduleTable.prototype = function(){
         return newSchedules;
     };
 
-    function addSchedule(schedule) {
-      this.schedules.push(schedule);
-    };
-
     function getSchedules() {
     	return this.schedules;
     };
@@ -88,9 +84,7 @@ ScheduleTable.prototype = function(){
     };
 
     return {concatSubSchedules: concatSubSchedules,
-            getSchedules: getSchedules,
-            addSchedule: addSchedule
-            }; 
+            getSchedules: getSchedules}; 
 }();
 
 /**

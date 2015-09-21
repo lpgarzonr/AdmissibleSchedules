@@ -1,4 +1,4 @@
-describe("Player", function() {
+/*describe("Player", function() {
   it("should be able to play a Song", function() {
     var uno = 1;
     expect(uno).toEqual(1);
@@ -8,4 +8,4 @@ describe("Player", function() {
     var uno = 1;
     expect(uno).toEqual(1);
   });
-});
+});*/
